@@ -17,7 +17,8 @@ public class DataInitializer {
      return args -> {
          if (userRepository.findByEmail("admin@careconnect.com").isEmpty()) {
               User user = new User();
-              user.setName("Administrator");
+              user.setFirstName("Administrator");
+                user.setLastName("Admin");
 
     user.setEmail("admin@careconnect.com");
     user.setPassword(passwordEncoder.encode("admin123"));

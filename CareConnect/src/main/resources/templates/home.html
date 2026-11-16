@@ -4,191 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareConnect - Admin Dashboard</title>
+    <title>CareConnect - Dashboard</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
 
-    <!-- Common CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
+    
     <style>
-        /* Dashboard-specific styles only */
-
-        .welcome {
-            margin-bottom: 25px;
+        body {
+            background: #f5f7fb;
         }
 
-        .welcome h3 {
-            color: #08264f;
-            font-weight: bold;
-        }
-
-        .welcome p {
-            color: #718096;
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
         }
 
         .stat-card {
             background: white;
             padding: 22px;
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             height: 100%;
-            transition: 0.3s;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 25px;
-        }
-
-        .icon-blue {
-            background: #e3efff;
-            color: #1761d1;
-        }
-
-        .icon-green {
-            background: #dcfce7;
-            color: #16a34a;
-        }
-
-        .icon-purple {
-            background: #f1e8ff;
-            color: #9333ea;
-        }
-
-        .icon-orange {
-            background: #fff0dc;
-            color: #f59e0b;
+        .stat-card h6 {
+            color: #777;
+            margin-bottom: 12px;
         }
 
         .stat-card h3 {
-            font-size: 25px;
-            color: #08264f;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin: 0;
         }
 
-        .stat-card p {
-            color: #718096;
-            margin: 0;
-            font-size: 14px;
+        .stat-icon {
+            font-size: 28px;
+            color: #0d6efd;
         }
 
         .content-card {
             background: white;
+            padding: 25px;
             border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
-            height: 100%;
-        }
-
-        .section-title {
-            color: #08264f;
-            font-size: 19px;
-            font-weight: bold;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-top: 25px;
         }
 
         .table th {
-            background: #edf4ff;
-            color: #08264f;
-            font-size: 13px;
-            white-space: nowrap;
-        }
-
-        .table td {
-            font-size: 13px;
-            vertical-align: middle;
-            color: #455468;
-        }
-
-        .status {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .confirmed {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .pending {
-            background: #fff0d5;
-            color: #d97706;
-        }
-
-        .cancelled {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-
-        .doctor-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 22px;
-            gap: 12px;
-        }
-
-        .doctor-item img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .doctor-details {
-            flex: 1;
-        }
-
-        .doctor-details h6 {
-            font-size: 13px;
-            font-weight: bold;
-            color: #08264f;
-            margin-bottom: 5px;
-        }
-
-        .doctor-details p {
-            font-size: 11px;
-            color: #718096;
-            margin: 0;
-        }
-
-        .views {
-            font-size: 12px;
-            font-weight: bold;
-            color: #1761d1;
-        }
-
-        .progress {
-            height: 7px;
-            margin-top: 7px;
+            background: #f1f4f9;
         }
 
         @media (max-width: 768px) {
-            .stat-card {
+            .main-content {
+                margin-left: 0;
                 padding: 15px;
-            }
-
-            .stat-card h3 {
-                font-size: 20px;
             }
         }
     </style>
@@ -196,227 +70,178 @@
 
 <body>
 
-    <!-- SIDEBAR -->
-    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<!-- Sidebar -->
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
+<!-- Main Content -->
+<div class="main-content">
 
-        <!-- TOPBAR -->
-        <div class="topbar">
-            <h4>Admin Dashboard</h4>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Dashboard</h2>
+            <p class="text-muted mb-0">
+                Welcome to CareConnect Admin Dashboard
+            </p>
+        </div>
 
-            <div class="admin-info">
-                <i class="bi bi-bell me-3"></i>
-                <i class="bi bi-person-circle me-1"></i>
-                <strong>Admin</strong>
+        <span class="badge bg-primary p-2">Admin</span>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6>Today's Appointments</h6>
+                        <h3 th:text="${todayAppointments}">0</h3>
+                    </div>
+                    <i class="bi bi-calendar-check stat-icon"></i>
+                </div>
             </div>
         </div>
 
-        <!-- WELCOME -->
-        <div class="welcome">
-            <h3>Welcome Back, Admin!</h3>
-            <p>Here's what's happening with your hospital today.</p>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6>Total Doctors</h6>
+                        <h3 th:text="${totalDoctors}">0</h3>
+                    </div>
+                    <i class="bi bi-person-badge stat-icon"></i>
+                </div>
+            </div>
         </div>
 
-        <!-- STATISTICS -->
-        <div class="row g-4 mb-4">
-
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card">
-                    <div class="stat-icon icon-blue">
-                        <i class="bi bi-calendar-check"></i>
-                    </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between">
                     <div>
-                        <h3>24</h3>
-                        <p>Today's Appointments</p>
+                        <h6>Total Patients</h6>
+                        <h3 th:text="${totalUsers}">0</h3>
                     </div>
+                    <i class="bi bi-people stat-icon"></i>
                 </div>
             </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card">
-                    <div class="stat-icon icon-green">
-                        <i class="bi bi-person-badge"></i>
-                    </div>
-                    <div>
-                        <h3>18</h3>
-                        <p>Total Doctors</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card">
-                    <div class="stat-icon icon-purple">
-                        <i class="bi bi-people"></i>
-                    </div>
-                    <div>
-                        <h3>1,240</h3>
-                        <p>Total Users</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="stat-card">
-                    <div class="stat-icon icon-orange">
-                        <i class="bi bi-graph-up-arrow"></i>
-                    </div>
-                    <div>
-                        <h3>356</h3>
-                        <p>This Month's Bookings</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <!-- APPOINTMENTS AND DOCTORS -->
-        <div class="row g-4">
-
-            <!-- APPOINTMENT TABLE -->
-            <div class="col-lg-8">
-                <div class="content-card">
-
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="section-title mb-0">
-                            Today's Appointments
-                        </h5>
-
-                        <a th:href="@{/appoinment}" class="btn btn-sm btn-primary">
-                            View All
-                        </a>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6>This Month's Bookings</h6>
+                        <h3 th:text="${monthlyBookings}">0</h3>
                     </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Patient</th>
-                                    <th>Doctor</th>
-                                    <th>Time</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Rohan M.</td>
-                                    <td>Dr. Anjali Nair</td>
-                                    <td>09:00 AM</td>
-                                    <td>
-                                        <span class="status confirmed">Confirmed</span>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>2</td>
-                                    <td>Sneha K.</td>
-                                    <td>Dr. Vivek Menon</td>
-                                    <td>10:30 AM</td>
-                                    <td>
-                                        <span class="status confirmed">Confirmed</span>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>3</td>
-                                    <td>Arjun P.</td>
-                                    <td>Dr. Meera Das</td>
-                                    <td>11:00 AM</td>
-                                    <td>
-                                        <span class="status pending">Pending</span>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>4</td>
-                                    <td>Divya S.</td>
-                                    <td>Dr. Anjali Nair</td>
-                                    <td>02:00 PM</td>
-                                    <td>
-                                        <span class="status cancelled">Cancelled</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-
-                        </table>
-                    </div>
-
+                    <i class="bi bi-calendar-month stat-icon"></i>
                 </div>
             </div>
-
-            <!-- MOST VIEWED DOCTORS -->
-            <div class="col-lg-4">
-                <div class="content-card">
-
-                    <h5 class="section-title">
-                        Most Viewed Doctors
-                    </h5>
-
-                    <div class="doctor-item">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Doctor">
-
-                        <div class="doctor-details">
-                            <h6>Dr. Anjali Nair</h6>
-                            <p>Cardiology</p>
-
-                            <div class="progress">
-                                <div class="progress-bar bg-primary" style="width: 100%"></div>
-                            </div>
-                        </div>
-
-                        <span class="views">1,240</span>
-                    </div>
-
-                    <div class="doctor-item">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Doctor">
-
-                        <div class="doctor-details">
-                            <h6>Dr. Vivek Menon</h6>
-                            <p>Orthopedics</p>
-
-                            <div class="progress">
-                                <div class="progress-bar bg-primary" style="width: 80%"></div>
-                            </div>
-                        </div>
-
-                        <span class="views">980</span>
-                    </div>
-
-                    <div class="doctor-item">
-                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Doctor">
-
-                        <div class="doctor-details">
-                            <h6>Dr. Meera Das</h6>
-                            <p>Dermatology</p>
-
-                            <div class="progress">
-                                <div class="progress-bar bg-primary" style="width: 58%"></div>
-                            </div>
-                        </div>
-
-                        <span class="views">720</span>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-        <!-- FOOTER -->
-        <div class="text-center mt-4 text-secondary">
-            <p>© 2026 CareConnect. All Rights Reserved.</p>
         </div>
 
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Today's Appointments -->
+    <div class="content-card">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4>Today's Appointments</h4>
+                <p class="text-muted mb-0"
+                   th:text="${#temporals.format(#temporals.createToday(), 'dd MMM yyyy')}">
+                    Today's date
+                </p>
+            </div>
+
+            <a th:href="@{/appointment}" class="btn btn-primary">
+                View All
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Specialization</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="appointment : ${appointments}">
+
+                    <td th:text="${appointment.id}">1</td>
+
+                    <td th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}">
+                        Patient Name
+                    </td>
+
+                    <td th:text="${appointment.doctor.name}">
+                        Doctor Name
+                    </td>
+
+                    <td th:text="${appointment.doctor.specialization}">
+                        Specialization
+                    </td>
+
+                    <td th:text="${#temporals.format(appointment.appointmentDate, 'dd-MM-yyyy')}">
+                        Date
+                    </td>
+
+                    <td th:text="${#temporals.format(appointment.appointmentTime, 'hh:mm a')}">
+                        Time
+                    </td>
+
+                    <td>
+                        <span class="badge"
+                              th:classappend="${appointment.status.name() == 'BOOKED'} ? ' bg-success' : ' bg-danger'"
+                              th:text="${appointment.status}">
+                            BOOKED
+                        </span>
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(appointments)}">
+                    <td colspan="7" class="text-center text-muted py-4">
+                        No appointments scheduled for today.
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Doctor Management -->
+    <div class="content-card">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h4>Doctor Management</h4>
+                <p class="text-muted mb-0">
+                    Manage doctors in CareConnect.
+                </p>
+            </div>
+
+            <a th:href="@{/doctor}" class="btn btn-outline-primary">
+                Manage Doctors
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

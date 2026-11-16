@@ -3,27 +3,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>User Management - CareConnect</title>
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Common CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <style>
-
-        /* PAGE HEADING */
-
         .page-heading {
             margin-bottom: 25px;
         }
@@ -36,8 +29,6 @@
         .page-heading p {
             color: #718096;
         }
-
-        /* STATISTICS CARDS */
 
         .stat-card {
             background: white;
@@ -75,11 +66,6 @@
             color: #f59e0b;
         }
 
-        .purple {
-            background: #f1e8ff;
-            color: #9333ea;
-        }
-
         .stat-card h4 {
             font-weight: bold;
             color: #08264f;
@@ -91,8 +77,6 @@
             font-size: 13px;
             margin: 0;
         }
-
-        /* TABLE CARD */
 
         .table-card {
             background: white;
@@ -106,25 +90,10 @@
             font-weight: bold;
         }
 
-        /* SEARCH */
-
-        .form-control,
-        .form-select {
+        .form-control {
             border-radius: 7px;
             padding: 10px;
         }
-
-        /* USER IMAGE */
-
-        .user-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 10px;
-        }
-
-        /* TABLE */
 
         .table {
             margin-top: 20px;
@@ -145,8 +114,6 @@
             padding: 15px;
         }
 
-        /* STATUS */
-
         .status {
             padding: 6px 12px;
             border-radius: 20px;
@@ -164,32 +131,15 @@
             color: #dc2626;
         }
 
-        /* ACTION BUTTONS */
-
         .action-btn {
             border: none;
             background: none;
             font-size: 17px;
-            margin-right: 8px;
             cursor: pointer;
-        }
-
-        .view-btn {
             color: #1761d1;
         }
 
-        .edit-btn {
-            color: #16a34a;
-        }
-
-        .delete-btn {
-            color: #dc2626;
-        }
-
-        /* RESPONSIVE */
-
         @media(max-width: 768px) {
-
             .stat-card {
                 padding: 15px;
             }
@@ -197,29 +147,20 @@
             .table-card {
                 padding: 15px;
             }
-
         }
-
     </style>
-
 </head>
 
 <body>
 
-    <!-- COMMON SIDEBAR -->
-
+    <!-- SIDEBAR -->
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-
     <!-- MAIN CONTENT -->
-
     <div class="main-content">
 
-
         <!-- TOPBAR -->
-
         <div class="topbar">
-
             <h4>User Management</h4>
 
             <div>
@@ -227,422 +168,137 @@
                 <i class="bi bi-person-circle me-1"></i>
                 <strong>Admin</strong>
             </div>
-
         </div>
-
 
         <!-- PAGE HEADING -->
-
         <div class="page-heading">
-
             <h3>Users</h3>
-
-            <p>Manage and monitor all registered users.</p>
-
+            <p>Manage and monitor registered patients.</p>
         </div>
 
-
-        <!-- STATISTICS CARDS -->
-
+        <!-- STATISTICS -->
         <div class="row g-4 mb-4">
 
-            <div class="col-lg-3 col-md-6">
-
+            <div class="col-lg-4 col-md-6">
                 <div class="stat-card">
-
                     <div class="stat-icon blue">
                         <i class="bi bi-people"></i>
                     </div>
 
                     <div>
-                        <h4>1,240</h4>
-                        <p>Total Users</p>
+                        <h4 th:text="${#lists.size(users)}">0</h4>
+                        <p>Total Patients</p>
                     </div>
-
                 </div>
-
             </div>
 
-
-            <div class="col-lg-3 col-md-6">
-
+            <div class="col-lg-4 col-md-6">
                 <div class="stat-card">
-
                     <div class="stat-icon green">
                         <i class="bi bi-person-check"></i>
                     </div>
 
                     <div>
-                        <h4>1,100</h4>
-                        <p>Active Users</p>
+                        <h4 th:text="${#lists.size(users.?[isActive == true])}">0</h4>
+                        <p>Active Patients</p>
                     </div>
-
                 </div>
-
             </div>
 
-
-            <div class="col-lg-3 col-md-6">
-
+            <div class="col-lg-4 col-md-6">
                 <div class="stat-card">
-
                     <div class="stat-icon orange">
                         <i class="bi bi-person-x"></i>
                     </div>
 
                     <div>
-                        <h4>140</h4>
-                        <p>Inactive Users</p>
+                        <h4 th:text="${#lists.size(users.?[isActive == false])}">0</h4>
+                        <p>Inactive Patients</p>
                     </div>
-
                 </div>
-
-            </div>
-
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="stat-card">
-
-                    <div class="stat-icon purple">
-                        <i class="bi bi-person-plus"></i>
-                    </div>
-
-                    <div>
-                        <h4>85</h4>
-                        <p>New Users This Month</p>
-                    </div>
-
-                </div>
-
             </div>
 
         </div>
 
-
         <!-- USER TABLE -->
-
         <div class="table-card">
 
-
-            <!-- TABLE HEADING -->
-
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-
-                <h5 class="section-title mb-0">
-                    All Users
-                </h5>
-
-                <button class="btn btn-primary btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addUserModal">
-
-                    <i class="bi bi-plus-circle me-1"></i>
-                    Add User
-
-                </button>
-
+                <h5 class="section-title mb-0">All Patients</h5>
+                <span class="text-secondary small">
+                    Registered patients from database
+                </span>
             </div>
-
-
-            <!-- SEARCH AND FILTER -->
-
-            <div class="row g-3">
-
-                <div class="col-md-5">
-
-                    <input type="text"
-                           class="form-control"
-                           placeholder="Search user by name or email">
-
-                </div>
-
-
-                <div class="col-md-4">
-
-                    <select class="form-select">
-
-                        <option value="">All Status</option>
-
-                        <option>Active</option>
-
-                        <option>Inactive</option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="col-md-3">
-
-                    <button class="btn btn-primary w-100">
-
-                        <i class="bi bi-search me-1"></i>
-                        Search
-
-                    </button>
-
-                </div>
-
-            </div>
-
 
             <!-- USER TABLE -->
-
             <div class="table-responsive">
 
                 <table class="table table-hover">
 
                     <thead>
-
                         <tr>
-
-                            <th>#</th>
-
-                            <th>User</th>
-
+                            <th>ID</th>
+                            <th>Patient Name</th>
                             <th>Email</th>
-
                             <th>Phone</th>
-
-                            <th>Joined Date</th>
-
+                            <th>Date of Birth</th>
                             <th>Status</th>
-
                             <th>Action</th>
-
                         </tr>
-
                     </thead>
-
 
                     <tbody>
 
-                        <!-- USER 1 -->
+                        <tr th:each="user : ${users}">
 
-                        <tr>
-
-                            <td>1</td>
+                            <td th:text="${user.id}">1</td>
 
                             <td>
-                                <img src="https://randomuser.me/api/portraits/men/11.jpg"
-                                     class="user-img"
-                                     alt="User">
-
-                                Rahul S.
+                                <strong th:text="${user.firstName + ' ' + user.lastName}">
+                                    Patient Name
+                                </strong>
                             </td>
 
-                            <td>rahul@gmail.com</td>
+                            <td th:text="${user.email}">
+                                patient@gmail.com
+                            </td>
 
-                            <td>9876543210</td>
+                            <td th:text="${user.phoneNumber}">
+                                9876543210
+                            </td>
 
-                            <td>12 Oct 2026</td>
+                            <td th:text="${user.dateOfBirth != null ? #temporals.format(user.dateOfBirth, 'dd MMM yyyy') : 'Not provided'}">
+                                01 Jan 2000
+                            </td>
 
                             <td>
-                                <span class="status active-status">
+                                <span th:if="${user.isActive}"
+                                      class="status active-status">
                                     Active
                                 </span>
-                            </td>
 
-                            <td>
-
-                                <button class="action-btn view-btn"
-                                        title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-
-                                <button class="action-btn edit-btn"
-                                        title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button class="action-btn delete-btn"
-                                        title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <!-- USER 2 -->
-
-                        <tr>
-
-                            <td>2</td>
-
-                            <td>
-                                <img src="https://randomuser.me/api/portraits/women/12.jpg"
-                                     class="user-img"
-                                     alt="User">
-
-                                Sneha K.
-                            </td>
-
-                            <td>sneha@gmail.com</td>
-
-                            <td>9876543211</td>
-
-                            <td>15 Oct 2026</td>
-
-                            <td>
-                                <span class="status active-status">
-                                    Active
-                                </span>
-                            </td>
-
-                            <td>
-
-                                <button class="action-btn view-btn">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-
-                                <button class="action-btn edit-btn">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button class="action-btn delete-btn">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <!-- USER 3 -->
-
-                        <tr>
-
-                            <td>3</td>
-
-                            <td>
-                                <img src="https://randomuser.me/api/portraits/men/15.jpg"
-                                     class="user-img"
-                                     alt="User">
-
-                                Arjun P.
-                            </td>
-
-                            <td>arjun@gmail.com</td>
-
-                            <td>9876543212</td>
-
-                            <td>18 Oct 2026</td>
-
-                            <td>
-                                <span class="status inactive-status">
+                                <span th:unless="${user.isActive}"
+                                      class="status inactive-status">
                                     Inactive
                                 </span>
                             </td>
 
                             <td>
+                                <a th:href="@{/user/{id}(id=${user.id})}"
+                                   class="action-btn"
+                                   title="View Patient Details">
 
-                                <button class="action-btn view-btn">
                                     <i class="bi bi-eye"></i>
-                                </button>
-
-                                <button class="action-btn edit-btn">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button class="action-btn delete-btn">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
+                                </a>
                             </td>
 
                         </tr>
 
-
-                        <!-- USER 4 -->
-
-                        <tr>
-
-                            <td>4</td>
-
-                            <td>
-                                <img src="https://randomuser.me/api/portraits/women/18.jpg"
-                                     class="user-img"
-                                     alt="User">
-
-                                Divya S.
+                        <tr th:if="${#lists.isEmpty(users)}">
+                            <td colspan="7" class="text-center text-secondary py-4">
+                                <i class="bi bi-people fs-3 d-block mb-2"></i>
+                                No patients registered yet.
                             </td>
-
-                            <td>divya@gmail.com</td>
-
-                            <td>9876543213</td>
-
-                            <td>20 Oct 2026</td>
-
-                            <td>
-                                <span class="status active-status">
-                                    Active
-                                </span>
-                            </td>
-
-                            <td>
-
-                                <button class="action-btn view-btn">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-
-                                <button class="action-btn edit-btn">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button class="action-btn delete-btn">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <!-- USER 5 -->
-
-                        <tr>
-
-                            <td>5</td>
-
-                            <td>
-                                <img src="https://randomuser.me/api/portraits/men/20.jpg"
-                                     class="user-img"
-                                     alt="User">
-
-                                Neha R.
-                            </td>
-
-                            <td>neha@gmail.com</td>
-
-                            <td>9876543214</td>
-
-                            <td>25 Oct 2026</td>
-
-                            <td>
-                                <span class="status inactive-status">
-                                    Inactive
-                                </span>
-                            </td>
-
-                            <td>
-
-                                <button class="action-btn view-btn">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-
-                                <button class="action-btn edit-btn">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button class="action-btn delete-btn">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                            </td>
-
                         </tr>
 
                     </tbody>
@@ -651,171 +307,16 @@
 
             </div>
 
-
-            <!-- PAGINATION -->
-
-            <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
-
-                <p class="text-secondary small mb-0">
-                    Showing 1 to 5 of 1,240 users
-                </p>
-
-                <nav>
-
-                    <ul class="pagination pagination-sm mb-0">
-
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">Previous</a>
-                        </li>
-
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-
-                    </ul>
-
-                </nav>
-
-            </div>
-
         </div>
-
-
-        <!-- ADD USER MODAL -->
-
-        <div class="modal fade" id="addUserModal" tabindex="-1">
-
-            <div class="modal-dialog modal-dialog-centered">
-
-                <div class="modal-content">
-
-                    <div class="modal-header">
-
-                        <h5 class="modal-title">
-                            Add New User
-                        </h5>
-
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal">
-                        </button>
-
-                    </div>
-
-
-                    <div class="modal-body">
-
-                        <form>
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    User Name
-                                </label>
-
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Enter user name">
-
-                            </div>
-
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Email
-                                </label>
-
-                                <input type="email"
-                                       class="form-control"
-                                       placeholder="Enter email">
-
-                            </div>
-
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Phone Number
-                                </label>
-
-                                <input type="tel"
-                                       class="form-control"
-                                       placeholder="Enter phone number">
-
-                            </div>
-
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Status
-                                </label>
-
-                                <select class="form-select">
-
-                                    <option>Active</option>
-
-                                    <option>Inactive</option>
-
-                                </select>
-
-                            </div>
-
-                        </form>
-
-                    </div>
-
-
-                    <div class="modal-footer">
-
-                        <button type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal">
-                            Cancel
-                        </button>
-
-                        <button type="button"
-                                class="btn btn-primary">
-                            Save User
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
 
         <!-- FOOTER -->
-
         <div class="text-center mt-4 text-secondary">
-
             <p>© 2026 CareConnect. All Rights Reserved.</p>
-
         </div>
 
     </div>
 
-
-    <!-- BOOTSTRAP JS -->
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>

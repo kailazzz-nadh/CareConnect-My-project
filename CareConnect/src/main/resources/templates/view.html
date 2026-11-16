@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Details - CareConnect</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        .page-heading h3 {
+            color: #08264f;
+            font-weight: bold;
+        }
+
+        .page-heading p {
+            color: #718096;
+        }
+
+        .details-card,
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #08264f;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            margin-bottom: 20px;
+        }
+
+        .detail-label {
+            color: #718096;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #08264f;
+            font-weight: 600;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .active-status {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .inactive-status {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .table th {
+            background: #edf4ff;
+            color: #08264f;
+            font-size: 13px;
+            white-space: nowrap;
+            padding: 15px;
+        }
+
+        .table td {
+            font-size: 13px;
+            color: #455468;
+            vertical-align: middle;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <h4>Patient Details</h4>
+
+            <div>
+                <i class="bi bi-bell me-3"></i>
+                <i class="bi bi-person-circle me-1"></i>
+                <strong>Admin</strong>
+            </div>
+        </div>
+
+        <!-- PAGE HEADING -->
+        <div class="page-heading mb-4">
+
+            <h3>Patient Information</h3>
+
+            <p>View patient details and appointment history.</p>
+
+            <a th:href="@{/user}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to Users
+            </a>
+
+        </div>
+
+        <!-- PATIENT DETAILS -->
+        <div class="details-card">
+
+            <h5 class="section-title">
+                <i class="bi bi-person-circle me-2"></i>
+                Personal Information
+            </h5>
+
+            <div class="row">
+
+                <div class="col-md-4 detail-item">
+                    <div class="detail-label">Patient ID</div>
+                    <div class="detail-value" th:text="${user.id}">1</div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <div class="detail-label">First Name</div>
+                    <div class="detail-value" th:text="${user.firstName}">First Name</div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <div class="detail-label">Last Name</div>
+                    <div class="detail-value" th:text="${user.lastName}">Last Name</div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <div class="detail-label">Email Address</div>
+                    <div class="detail-value" th:text="${user.email}">email@gmail.com</div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <div class="detail-label">Phone Number</div>
+                    <div class="detail-value" th:text="${user.phoneNumber}">9876543210</div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <div class="detail-label">Date of Birth</div>
+                    <div class="detail-value"
+                         th:text="${user.dateOfBirth != null ? #temporals.format(user.dateOfBirth, 'dd MMM yyyy') : 'Not provided'}">
+                        01 Jan 2000
+                    </div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <div class="detail-label">Gender</div>
+                    <div class="detail-value"
+                         th:text="${user.gender != null ? user.gender : 'Not provided'}">
+                        Gender
+                    </div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <div class="detail-label">Role</div>
+                    <div class="detail-value" th:text="${user.role}">PATIENT</div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <div class="detail-label">Account Status</div>
+
+                    <div>
+                        <span th:if="${user.isActive}"
+                              class="status active-status">
+                            Active
+                        </span>
+
+                        <span th:unless="${user.isActive}"
+                              class="status inactive-status">
+                            Inactive
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 detail-item">
+                    <div class="detail-label">Address</div>
+                    <div class="detail-value"
+                         th:text="${user.address != null ? user.address : 'Not provided'}">
+                        Address
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- APPOINTMENT HISTORY -->
+        <div class="table-card">
+
+            <h5 class="section-title">
+                <i class="bi bi-calendar-check me-2"></i>
+                Appointment History
+            </h5>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+
+                    <thead>
+                        <tr>
+                            <th>Appointment ID</th>
+                            <th>Doctor</th>
+                            <th>Specialization</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="appointment : ${appointments}">
+
+                            <td th:text="${appointment.id}">1</td>
+
+                            <td th:text="${appointment.doctor.name}">
+                                Doctor Name
+                            </td>
+
+                            <td th:text="${appointment.doctor.specialization}">
+                                Specialization
+                            </td>
+
+                            <td th:text="${#temporals.format(appointment.appointmentDate, 'dd MMM yyyy')}">
+                                01 Jan 2026
+                            </td>
+
+                            <td th:text="${#temporals.format(appointment.appointmentTime, 'hh:mm a')}">
+                                10:00 AM
+                            </td>
+
+                            <td th:text="${appointment.status}">
+                                BOOKED
+                            </td>
+
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(appointments)}">
+                            <td colspan="6" class="text-center text-secondary py-4">
+                                <i class="bi bi-calendar-x fs-3 d-block mb-2"></i>
+                                No appointments found for this patient.
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="text-center mt-4 text-secondary">
+            <p>© 2026 CareConnect. All Rights Reserved.</p>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -20,9 +20,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <style>
-
         /* PAGE HEADING */
-
         .page-heading {
             margin-bottom: 25px;
         }
@@ -37,7 +35,6 @@
         }
 
         /* STATISTICS */
-
         .stat-card {
             background: white;
             padding: 20px;
@@ -92,7 +89,6 @@
         }
 
         /* DOCTOR TABLE CARD */
-
         .table-card {
             background: white;
             padding: 22px;
@@ -106,25 +102,13 @@
         }
 
         /* SEARCH */
-
         .form-control,
         .form-select {
             border-radius: 7px;
             padding: 10px;
         }
 
-        /* DOCTOR IMAGE */
-
-        .doctor-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 10px;
-        }
-
         /* TABLE */
-
         .table {
             margin-top: 20px;
         }
@@ -145,12 +129,12 @@
         }
 
         /* STATUS */
-
         .status {
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: bold;
+            white-space: nowrap;
         }
 
         .available {
@@ -164,7 +148,6 @@
         }
 
         /* ACTION BUTTONS */
-
         .action-btn {
             border: none;
             background: none;
@@ -186,9 +169,7 @@
         }
 
         /* RESPONSIVE */
-
         @media(max-width: 768px) {
-
             .stat-card {
                 padding: 15px;
             }
@@ -196,9 +177,7 @@
             .table-card {
                 padding: 15px;
             }
-
         }
-
     </style>
 
 </head>
@@ -206,17 +185,12 @@
 <body>
 
     <!-- COMMON SIDEBAR -->
-
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-
     <!-- MAIN CONTENT -->
-
     <div class="main-content">
 
-
         <!-- TOPBAR -->
-
         <div class="topbar">
 
             <h4>Doctor Management</h4>
@@ -229,9 +203,7 @@
 
         </div>
 
-
         <!-- PAGE HEADING -->
-
         <div class="page-heading">
 
             <h3>Doctors</h3>
@@ -240,11 +212,10 @@
 
         </div>
 
-
         <!-- STATISTICS CARDS -->
-
         <div class="row g-4 mb-4">
 
+            <!-- TOTAL DOCTORS -->
             <div class="col-lg-3 col-md-6">
 
                 <div class="stat-card">
@@ -254,7 +225,7 @@
                     </div>
 
                     <div>
-                        <h4>18</h4>
+                        <h4 th:text="${#lists.size(doctors)}">0</h4>
                         <p>Total Doctors</p>
                     </div>
 
@@ -262,7 +233,7 @@
 
             </div>
 
-
+            <!-- AVAILABLE DOCTORS -->
             <div class="col-lg-3 col-md-6">
 
                 <div class="stat-card">
@@ -272,7 +243,7 @@
                     </div>
 
                     <div>
-                        <h4>15</h4>
+                        <h4 th:text="${#lists.size(doctors.?[isActive == true])}">0</h4>
                         <p>Available Doctors</p>
                     </div>
 
@@ -280,7 +251,7 @@
 
             </div>
 
-
+            <!-- UNAVAILABLE DOCTORS -->
             <div class="col-lg-3 col-md-6">
 
                 <div class="stat-card">
@@ -290,7 +261,7 @@
                     </div>
 
                     <div>
-                        <h4>3</h4>
+                        <h4 th:text="${#lists.size(doctors.?[isActive == false])}">0</h4>
                         <p>Unavailable Doctors</p>
                     </div>
 
@@ -298,7 +269,7 @@
 
             </div>
 
-
+            <!-- SPECIALIZATIONS -->
             <div class="col-lg-3 col-md-6">
 
                 <div class="stat-card">
@@ -308,7 +279,7 @@
                     </div>
 
                     <div>
-                        <h4>8</h4>
+                        <h4 th:text="${#sets.size(#sets.toSet(doctors.![specialization]))}">0</h4>
                         <p>Specializations</p>
                     </div>
 
@@ -318,34 +289,27 @@
 
         </div>
 
-
         <!-- DOCTOR TABLE -->
-
         <div class="table-card">
 
-
             <!-- TABLE HEADING -->
-
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
 
                 <h5 class="section-title mb-0">
                     All Doctors
                 </h5>
 
-                <button class="btn btn-primary btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addDoctorModal">
+                <!-- ADD DOCTOR BUTTON -->
+                <a th:href="@{/doctor/add}" class="btn btn-primary btn-sm">
 
                     <i class="bi bi-plus-circle me-1"></i>
                     Add Doctor
 
-                </button>
+                </a>
 
             </div>
 
-
             <!-- SEARCH AND FILTER -->
-
             <div class="row g-3">
 
                 <div class="col-md-5">
@@ -356,31 +320,24 @@
 
                 </div>
 
-
                 <div class="col-md-4">
 
                     <select class="form-select">
 
                         <option value="">All Specializations</option>
-
-                        <option>Cardiology</option>
-
-                        <option>Orthopedics</option>
-
-                        <option>Dermatology</option>
-
-                        <option>Neurology</option>
-
-                        <option>Pediatrics</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Orthopedics">Orthopedics</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Neurology">Neurology</option>
+                        <option value="Pediatrics">Pediatrics</option>
 
                     </select>
 
                 </div>
 
-
                 <div class="col-md-3">
 
-                    <button class="btn btn-primary w-100">
+                    <button type="button" class="btn btn-primary w-100">
 
                         <i class="bi bi-search me-1"></i>
                         Search
@@ -391,9 +348,7 @@
 
             </div>
 
-
-            <!-- DOCTOR TABLE -->
-
+            <!-- DOCTOR LISTING TABLE -->
             <div class="table-responsive">
 
                 <table class="table table-hover">
@@ -401,263 +356,106 @@
                     <thead>
 
                         <tr>
-
-                            <th>#</th>
-
-                            <th>Doctor</th>
-
-                            <th>Email</th>
-
+                            <th>ID</th>
+                            <th>Doctor Name</th>
                             <th>Specialization</th>
-
+                            <th>Qualification</th>
                             <th>Experience</th>
-
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <th>Consultation Fee</th>
                             <th>Status</th>
-
                             <th>Action</th>
-
                         </tr>
 
                     </thead>
 
-
                     <tbody>
 
-                        <!-- DOCTOR 1 -->
+                        <!-- DISPLAY DOCTORS FROM DATABASE -->
+                        <tr th:each="doctor : ${doctors}">
 
-                        <tr>
+                            <td th:text="${doctor.id}">1</td>
 
-                            <td>1</td>
-
-                            <td>
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg"
-                                     class="doctor-img"
-                                     alt="Doctor">
-
-                                Dr. Anjali Nair
+                            <td th:text="${doctor.name}">
+                                Doctor Name
                             </td>
 
-                            <td>anjali@gmail.com</td>
+                            <td th:text="${doctor.specialization}">
+                                Cardiology
+                            </td>
 
-                            <td>Cardiology</td>
-
-                            <td>10 Years</td>
+                            <td th:text="${doctor.qualification}">
+                                MBBS, MD
+                            </td>
 
                             <td>
-                                <span class="status available">
+                                <span th:text="${doctor.experience}">10</span>
+                                Years
+                            </td>
+
+                            <td th:text="${doctor.phoneNumber}">
+                                9876543210
+                            </td>
+
+                            <td th:text="${doctor.email}">
+                                doctor@gmail.com
+                            </td>
+
+                            <td>
+                                ₹<span th:text="${doctor.consultationFee}">500.00</span>
+                            </td>
+
+                            <!-- STATUS -->
+                            <td>
+
+                                <span th:if="${doctor.isActive}"
+                                      class="status available">
                                     Available
                                 </span>
-                            </td>
 
-                            <td>
-
-                                <button class="action-btn view-btn"
-                                        title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-
-                                <button class="action-btn edit-btn"
-                                        title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button class="action-btn delete-btn"
-                                        title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <!-- DOCTOR 2 -->
-
-                        <tr>
-
-                            <td>2</td>
-
-                            <td>
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg"
-                                     class="doctor-img"
-                                     alt="Doctor">
-
-                                Dr. Vivek Menon
-                            </td>
-
-                            <td>vivek@gmail.com</td>
-
-                            <td>Orthopedics</td>
-
-                            <td>8 Years</td>
-
-                            <td>
-                                <span class="status available">
-                                    Available
-                                </span>
-                            </td>
-
-                            <td>
-
-                                <button class="action-btn view-btn"
-                                        title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-
-                                <button class="action-btn edit-btn"
-                                        title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button class="action-btn delete-btn"
-                                        title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <!-- DOCTOR 3 -->
-
-                        <tr>
-
-                            <td>3</td>
-
-                            <td>
-                                <img src="https://randomuser.me/api/portraits/women/68.jpg"
-                                     class="doctor-img"
-                                     alt="Doctor">
-
-                                Dr. Meera Das
-                            </td>
-
-                            <td>meera@gmail.com</td>
-
-                            <td>Dermatology</td>
-
-                            <td>6 Years</td>
-
-                            <td>
-                                <span class="status available">
-                                    Available
-                                </span>
-                            </td>
-
-                            <td>
-
-                                <button class="action-btn view-btn"
-                                        title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-
-                                <button class="action-btn edit-btn"
-                                        title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button class="action-btn delete-btn"
-                                        title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <!-- DOCTOR 4 -->
-
-                        <tr>
-
-                            <td>4</td>
-
-                            <td>
-                                <img src="https://randomuser.me/api/portraits/men/45.jpg"
-                                     class="doctor-img"
-                                     alt="Doctor">
-
-                                Dr. Rahul Kumar
-                            </td>
-
-                            <td>rahul@gmail.com</td>
-
-                            <td>Neurology</td>
-
-                            <td>12 Years</td>
-
-                            <td>
-                                <span class="status unavailable">
+                                <span th:unless="${doctor.isActive}"
+                                      class="status unavailable">
                                     Unavailable
                                 </span>
+
                             </td>
 
+                            <!-- ACTION BUTTONS -->
                             <td>
 
-                                <button class="action-btn view-btn"
+                                <button type="button"
+                                        class="action-btn view-btn"
                                         title="View">
                                     <i class="bi bi-eye"></i>
                                 </button>
 
-                                <button class="action-btn edit-btn"
-                                        title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
+                               <!-- EDIT BUTTON -->
+<a th:href="@{/doctor/edit/{id}(id=${doctor.id})}"
+   class="action-btn edit-btn"
+   title="Edit">
 
-                                <button class="action-btn delete-btn"
-                                        title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
+    <i class="bi bi-pencil-square"></i>
+
+</a>
+                              <a th:href="@{/doctor/delete/{id}(id=${doctor.id})}"
+   class="action-btn delete-btn"
+   title="Delete"
+   onclick="return confirm('Are you sure you want to delete this doctor?');">
+
+    <i class="bi bi-trash"></i>
+
+</a>
 
                             </td>
 
                         </tr>
 
+                        <!-- NO DOCTORS MESSAGE -->
+                        <tr th:if="${#lists.isEmpty(doctors)}">
 
-                        <!-- DOCTOR 5 -->
-
-                        <tr>
-
-                            <td>5</td>
-
-                            <td>
-                                <img src="https://randomuser.me/api/portraits/women/65.jpg"
-                                     class="doctor-img"
-                                     alt="Doctor">
-
-                                Dr. Priya Thomas
-                            </td>
-
-                            <td>priya@gmail.com</td>
-
-                            <td>Pediatrics</td>
-
-                            <td>5 Years</td>
-
-                            <td>
-                                <span class="status available">
-                                    Available
-                                </span>
-                            </td>
-
-                            <td>
-
-                                <button class="action-btn view-btn"
-                                        title="View">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-
-                                <button class="action-btn edit-btn"
-                                        title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button class="action-btn delete-btn"
-                                        title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
+                            <td colspan="10" class="text-center text-secondary">
+                                No doctors found.
                             </td>
 
                         </tr>
@@ -668,179 +466,9 @@
 
             </div>
 
-
-            <!-- PAGINATION -->
-
-            <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
-
-                <p class="text-secondary small mb-0">
-                    Showing 1 to 5 of 18 doctors
-                </p>
-
-                <nav>
-
-                    <ul class="pagination pagination-sm mb-0">
-
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">Previous</a>
-                        </li>
-
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-
-                    </ul>
-
-                </nav>
-
-            </div>
-
         </div>
-
-
-        <!-- ADD DOCTOR MODAL -->
-
-        <div class="modal fade" id="addDoctorModal" tabindex="-1">
-
-            <div class="modal-dialog modal-dialog-centered">
-
-                <div class="modal-content">
-
-                    <div class="modal-header">
-
-                        <h5 class="modal-title">
-                            Add New Doctor
-                        </h5>
-
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal">
-                        </button>
-
-                    </div>
-
-
-                    <div class="modal-body">
-
-                        <form>
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Doctor Name
-                                </label>
-
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder="Enter doctor name">
-
-                            </div>
-
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Email
-                                </label>
-
-                                <input type="email"
-                                       class="form-control"
-                                       placeholder="Enter email">
-
-                            </div>
-
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Specialization
-                                </label>
-
-                                <select class="form-select">
-
-                                    <option value="">Select Specialization</option>
-
-                                    <option>Cardiology</option>
-
-                                    <option>Orthopedics</option>
-
-                                    <option>Dermatology</option>
-
-                                    <option>Neurology</option>
-
-                                    <option>Pediatrics</option>
-
-                                </select>
-
-                            </div>
-
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Experience (Years)
-                                </label>
-
-                                <input type="number"
-                                       class="form-control"
-                                       placeholder="Enter experience">
-
-                            </div>
-
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Phone Number
-                                </label>
-
-                                <input type="tel"
-                                       class="form-control"
-                                       placeholder="Enter phone number">
-
-                            </div>
-
-                        </form>
-
-                    </div>
-
-
-                    <div class="modal-footer">
-
-                        <button type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal">
-                            Cancel
-                        </button>
-
-                        <button type="button"
-                                class="btn btn-primary">
-                            Save Doctor
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
 
         <!-- FOOTER -->
-
         <div class="text-center mt-4 text-secondary">
 
             <p>© 2026 CareConnect. All Rights Reserved.</p>
@@ -849,11 +477,8 @@
 
     </div>
 
-
     <!-- BOOTSTRAP JS -->
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>

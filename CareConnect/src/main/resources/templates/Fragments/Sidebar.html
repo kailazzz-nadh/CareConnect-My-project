@@ -18,14 +18,12 @@
     </a>
 
     <!-- Appointments -->
-    <a th:href="@{/appoinment}"
-       th:classappend="${activePage == 'appointment'} ? 'active' : ''">
+   <a th:href="@{/appointment}"
+   th:classappend="${activePage == 'appointment'} ? 'active' : ''">
 
-        <i class="bi bi-calendar-check"></i>
-        <span>Appointments</span>
-
-    </a>
-
+    <i class="bi bi-calendar-check"></i>
+    <span>Appointments</span>
+</a>
     <!-- Doctors -->
     <a th:href="@{/doctor}"
        th:classappend="${activePage == 'doctors'} ? 'active' : ''">
